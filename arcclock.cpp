@@ -87,12 +87,12 @@ void ArcClock::paintEvent(QPaintEvent *)
     painter.setPen(Qt::NoPen);
     painter.setBrush(QColor(dialColor));
 
-    QFont font(textFont, side/10);
+    QFont font(textFont, side/7);
     QFontMetrics fm(font);
     font.setBold(true);
     painter.setFont(font);
     QString timeText = time.toString(timeFormat);
-    painter.setPen(QColor("#30000000"));
+    painter.setPen(QColor("#40000000"));
     QRect rectShadow(2, (side / 2) - (fm.height() / 2) + 2, side, side / 2 + 1);
     painter.drawText(rectShadow, Qt::AlignHCenter, timeText);
     QRect rect(0, (side / 2) - (fm.height() / 2), side, side / 2);
@@ -101,12 +101,12 @@ void ArcClock::paintEvent(QPaintEvent *)
 
 
     if (showDate) {
-        QRect rect2(0, side / 2 + fm.height() / 2 + 4 , side, side / 2);
+        QRect rect2(0, side / 2 + fm.height() / 2 - 2, side, side / 2);
         QFont font2(textFont, side/20);
         painter.setFont(font2);
         painter.setPen(QColor(dateColor));
         painter.drawText(rect2, Qt::AlignHCenter, QDate::currentDate().toString("d MMM yy"));
-        QRect rect3(0, 0, side, (side / 2) - (fm.height() / 2) - 4);
+        QRect rect3(0, 0, side, (side / 2) - (fm.height() / 2) + 2);
         painter.drawText(rect3, Qt::AlignHCenter | Qt::AlignBottom, QDate::currentDate().toString("dddd"));
     }
 
@@ -121,7 +121,7 @@ void ArcClock::paintEvent(QPaintEvent *)
     hourPathShadow.arcTo(hourRectShadow, 90.0, -30.0 * twelve - time.minute() / 2);
     QPen hourPenShadow;
     hourPenShadow.setWidth(side/22);
-    hourPenShadow.setColor(QColor("#30000000"));
+    hourPenShadow.setColor(QColor("#40000000"));
     hourPenShadow.setCapStyle(Qt::RoundCap);
     painter2Shadow.setPen(hourPenShadow);
     painter2Shadow.drawPath(hourPathShadow);
@@ -150,7 +150,7 @@ void ArcClock::paintEvent(QPaintEvent *)
     minutePathShadow.arcTo(minuteRectShadow, 90.0, -6.0 * time.minute());
     QPen minutePenShadow;
     minutePenShadow.setWidth(side/24);
-    minutePenShadow.setColor(QColor("#30000000"));
+    minutePenShadow.setColor(QColor("#40000000"));
     minutePenShadow.setCapStyle(Qt::RoundCap);
     painter3Shadow.setPen(minutePenShadow);
     painter3Shadow.drawPath(minutePathShadow);
