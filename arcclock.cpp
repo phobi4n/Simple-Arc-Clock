@@ -87,22 +87,19 @@ void ArcClock::paintEvent(QPaintEvent *)
     painter.setPen(Qt::NoPen);
     painter.setBrush(QColor(dialColor));
 
-    QFont font(textFont, side/7);
+    QFont font(textFont, side/5);
     QFontMetrics fm(font);
     font.setBold(true);
     painter.setFont(font);
     QString timeText = time.toString(timeFormat);
-    painter.setPen(QColor("#40000000"));
-    QRect rectShadow(2, (side / 2) - (fm.height() / 2) + 2, side, side / 2 + 1);
-    painter.drawText(rectShadow, Qt::AlignHCenter, timeText);
-    QRect rect(0, (side / 2) - (fm.height() / 2), side, side / 2);
+    QRect rect(0, 0, side, side);
     painter.setPen(QColor(timeColor));
-    painter.drawText(rect, Qt::AlignHCenter , timeText);
+    painter.drawText(rect, Qt::AlignHCenter | Qt::AlignVCenter, timeText);
 
 
     if (showDate) {
         QRect rect2(0, side / 2 + fm.height() / 2 - 2, side, side / 2);
-        QFont font2(textFont, side/20);
+        QFont font2(textFont, side/16);
         painter.setFont(font2);
         painter.setPen(QColor(dateColor));
         painter.drawText(rect2, Qt::AlignHCenter, QDate::currentDate().toString("d MMM yy"));
@@ -111,59 +108,29 @@ void ArcClock::paintEvent(QPaintEvent *)
     }
 
     int twelve = (time.hour() > 12) ? time.hour() - 12 : time.hour();
-
-    QPainter painter2Shadow(this);
-    QPainterPath hourPathShadow;
-    painter2Shadow.setRenderHint(QPainter::Antialiasing);
-    QRect hourRectShadow(static_cast<int>(side / 8.7) + 1, static_cast<int>(side / 8.7) + 1,
-                   static_cast<int>(side / 1.3) + 1, static_cast<int>(side / 1.3) + 1);
-    hourPathShadow.arcMoveTo(hourRectShadow, 90.0);
-    hourPathShadow.arcTo(hourRectShadow, 90.0, -30.0 * twelve - time.minute() / 2);
-    QPen hourPenShadow;
-    hourPenShadow.setWidth(side/22);
-    hourPenShadow.setColor(QColor("#40000000"));
-    hourPenShadow.setCapStyle(Qt::RoundCap);
-    painter2Shadow.setPen(hourPenShadow);
-    painter2Shadow.drawPath(hourPathShadow);
-
     QPainter painter2(this);
     QPainterPath hourPath;
     painter2.setRenderHint(QPainter::Antialiasing);
-    QRect hourRect(static_cast<int>(side / 8.7), static_cast<int>(side / 8.7),
-                   static_cast<int>(side / 1.3), static_cast<int>(side / 1.3));
+    QRect hourRect(24, 24, side - 48, side - 48);
+//    painter2.drawRect(hourRect);
     hourPath.arcMoveTo(hourRect, 90.0);
     hourPath.arcTo(hourRect, 90.0, -30.0 * twelve - time.minute() / 2);
     QPen hourPen;
-    hourPen.setWidth(side/22);
+    hourPen.setWidth(12);
     hourPen.setColor(QColor(hourColor));
     hourPen.setCapStyle(Qt::RoundCap);
     painter2.setPen(hourPen);
     painter2.drawPath(hourPath);
 
-
-    QPainter painter3Shadow(this);
-    QPainterPath minutePathShadow;
-    painter3Shadow.setRenderHint(QPainter::Antialiasing);
-    QRect minuteRectShadow(static_cast<int>(side / 22.0) + 1, static_cast<int>(side / 22.0) + 1,
-                     static_cast<int>(side / 1.1) + 1, static_cast<int>(side / 1.1) + 1);
-    minutePathShadow.arcMoveTo(minuteRectShadow,90.0);
-    minutePathShadow.arcTo(minuteRectShadow, 90.0, -6.0 * time.minute());
-    QPen minutePenShadow;
-    minutePenShadow.setWidth(side/24);
-    minutePenShadow.setColor(QColor("#40000000"));
-    minutePenShadow.setCapStyle(Qt::RoundCap);
-    painter3Shadow.setPen(minutePenShadow);
-    painter3Shadow.drawPath(minutePathShadow);
-
     QPainter painter3(this);
     QPainterPath minutePath;
     painter3.setRenderHint(QPainter::Antialiasing);
-    QRect minuteRect(static_cast<int>(side / 22.0), static_cast<int>(side / 22.0),
-                     static_cast<int>(side / 1.1), static_cast<int>(side / 1.1));
-    minutePath.arcMoveTo(minuteRect,90.0);
+    QRect minuteRect(6, 6, side - 12, side - 12);
+//    painter3.drawRect(minuteRect);
+    minutePath.arcMoveTo(minuteRect, 90.5);
     minutePath.arcTo(minuteRect, 90.0, -6.0 * time.minute());
     QPen minutePen;
-    minutePen.setWidth(side/24);
+    minutePen.setWidth(12);
     minutePen.setColor(QColor(minuteColor));
     minutePen.setCapStyle(Qt::RoundCap);
     painter3.setPen(minutePen);
