@@ -38,6 +38,7 @@ Prefs::Prefs(QWidget *parent) :
     ui->lbl_minuteColor->setStyleSheet(minuteColorStyle);
     ui->cb_showDate->setChecked(settings.value("showDate").toBool());
     ui->sb_startSize->setValue(settings.value("initHeight").toInt());
+    ui->cb_rings->setChecked(settings.value("rings").toBool());
 }
 
 Prefs::~Prefs()
@@ -56,6 +57,7 @@ void Prefs::on_pb_apply_clicked()
     settings.setValue("dateColor", m_datecolor);
     settings.setValue("hourColor", m_hourcolor);
     settings.setValue("minuteColor", m_minutecolor);
+    settings.setValue("rings", ui->cb_rings->isChecked());
 
     if (ui->cb_timeFormat->isChecked()) settings.setValue("timeFormat", "h:mm ap");
     else settings.setValue("timeFormat", "h:mm");

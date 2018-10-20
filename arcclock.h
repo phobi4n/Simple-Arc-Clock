@@ -9,8 +9,8 @@ class ArcClock : public QWidget
     Q_OBJECT
 
 public:
-    ArcClock(QWidget *parent = 0);
-    ~ArcClock();
+    ArcClock(QWidget *parent = nullptr);
+    ~ArcClock() override;
     QSize sizeHint() const override;
 
 protected:
@@ -28,6 +28,7 @@ private:
     void readSettings(bool);
     void writePosition(void);
     bool showDate;
+    bool showRings;
     QString hourColor;
     QString minuteColor;
     QString timeColor;

@@ -17,6 +17,7 @@ ArcClock::ArcClock(QWidget *parent)
 
     this->readSettings(true);
 
+
     if ((posX > 0) || (posY > 0))
         this->move(posX, posY);
 
@@ -123,56 +124,72 @@ void ArcClock::paintEvent(QPaintEvent *)
         minuteArcOffset = 12;
     }
 
-    qDebug() << arcThickness;
+//    qDebug() << arcThickness;
     qreal hourPosition = -30.0 * twelve - time.minute() / 2;
     qreal minutePosition = -6.0 * time.minute();
 
     QRect hourRect(hourArcOffset, hourArcOffset, side - 2 * hourArcOffset, side - 2 * hourArcOffset);
     QRect minuteRect(minuteArcOffset, minuteArcOffset, side - 2 * minuteArcOffset, side - 2 * minuteArcOffset);
 
-    QPainter hourGroove(this);
-    QPainterPath hourArcPathGroove;
-    hourArcPathGroove.arcMoveTo(hourRect, 90.0);
-    hourArcPathGroove.arcTo(hourRect, 90.0, 360.0 + hourPosition);
-    hourGroove.setRenderHint(QPainter::Antialiasing);
-    QPen hourArcPenGroove;
-    hourArcPenGroove.setWidth(arcThickness);
-    hourArcPenGroove.setCapStyle(Qt::FlatCap);
-    QColor hourComplete(hourColor);
-    int h, s, l, a;
-//    hourComplete.setAlpha(40);
-    hourComplete.getHsl(&h, &s, &l, &a);
-    qDebug() << h << s << l << a;
-    hourComplete.setHsl(h, s / 3, l / 2, a / 2);
-    hourArcPenGroove.setColor(hourComplete);
-    hourGroove.setPen(hourArcPenGroove);
-    hourGroove.drawPath(hourArcPathGroove);
+    if (showRings) {
+        QPainter hourGroove(this);
+        QPainterPath hourGroovePath;
+        hourGroovePath.arcMoveTo(hourRect, 90.0);
+        hourGroovePath.arcTo(hourRect, 90.0, 360.0 + hourPosition);
+        hourGroove.setRenderHint(QPainter::Antialiasing);
+        QPen hourGroovePen;
+        hourGroovePen.setWidth(2);
+        hourGroovePen.setCapStyle(Qt::FlatCap);
+        hourGroovePen.setColor(QColor(hourColor));
+        hourGroove.setPen(hourGroovePen);
+        hourGroove.drawPath(hourGroovePath);
+    }
 
     QPainter hourArc(this);
     QPainterPath hourArcPath;
     hourArc.setRenderHint(QPainter::Antialiasing);
     hourArcPath.arcMoveTo(hourRect, 90.0);
     hourArcPath.arcTo(hourRect, 90.0, hourPosition);
-    QPen hourArcPen;
-    hourArcPen.setWidth(arcThickness);
-    hourArcPen.setColor(QColor(hourColor));
-    hourArcPen.setCapStyle(Qt::RoundCap);
-    hourArc.setPen(hourArcPen);
+    QPen hourPen;
+    hourPen.setWidth(arcThickness);
+    hourPen.setColor(QColor(hourColor));
+    hourPen.setCapStyle(Qt::RoundCap);
+
+    if (showRings)
+        hourPen.setCapStyle(Qt::FlatCap);
+
+    hourArc.setPen(hourPen);
     hourArc.drawPath(hourArcPath);
 
-    QPainter painter3complete(this);
+    if (showRings) {
+        QPainter minuteGroove(this);
+        QPainterPath minuteGroovePath;
+        minuteGroovePath.arcMoveTo(minuteRect, 90.0);
+        minuteGroovePath.arcTo(minuteRect, 90.0, 360 + minutePosition);
+        minuteGroove.setRenderHint(QPainter::Antialiasing);
+        QPen minuteGroovePen;
+        minuteGroovePen.setWidth(2);
+        minuteGroovePen.setCapStyle(Qt::FlatCap);
+        minuteGroovePen.setColor(QColor(minuteColor));
+        minuteGroove.setPen(minuteGroovePen);
+        minuteGroove.drawPath(minuteGroovePath);
+    }
 
-    QPainter painter3(this);
+    QPainter minuteArc(this);
     QPainterPath minutePath;
-    painter3.setRenderHint(QPainter::Antialiasing);
+    minuteArc.setRenderHint(QPainter::Antialiasing);
     minutePath.arcMoveTo(minuteRect, 90.5);
     minutePath.arcTo(minuteRect, 90.0, minutePosition);
     QPen minutePen;
     minutePen.setWidth(arcThickness);
     minutePen.setColor(QColor(minuteColor));
     minutePen.setCapStyle(Qt::RoundCap);
-    painter3.setPen(minutePen);
-    painter3.drawPath(minutePath);
+
+    if (showRings)
+        minutePen.setCapStyle(Qt::FlatCap);
+
+    minuteArc.setPen(minutePen);
+    minuteArc.drawPath(minutePath);
 }
 
 void ArcClock::resizeEvent(QResizeEvent * /* event */)
@@ -199,6 +216,7 @@ void ArcClock::initVars()
     settings.setValue("textFont", "Sans");
     settings.setValue("posX", 0);
     settings.setValue("posY", 0);
+    settings.setValue("rings", false);
     settings.setValue("Existant", true);
 }
 
@@ -231,6 +249,7 @@ void ArcClock::readSettings(bool startup)
     dateColor   = settings.value("dateColor").toString();
     timeFormat  = settings.value("timeFormat").toString();
     textFont    = settings.value("textFont").toString();
+    showRings   = settings.value("rings").toBool();
 }
 
 void ArcClock::onConfig(void)

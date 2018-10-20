@@ -13,7 +13,7 @@ class Prefs : public QDialog
     Q_OBJECT
 
 public:
-    explicit Prefs(QWidget *parent = 0);
+    explicit Prefs(QWidget *parent = nullptr);
     ~Prefs();
 
 private slots:
