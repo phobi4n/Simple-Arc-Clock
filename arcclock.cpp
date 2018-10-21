@@ -93,38 +93,25 @@ void ArcClock::paintEvent(QPaintEvent *)
     painter.setFont(font);
     QString timeText = time.toString(timeFormat);
     QRect rect(0, 0, side, side);
-//    painter.drawRect(rect);
     painter.setPen(QColor(timeColor));
     painter.drawText(rect, Qt::AlignHCenter | Qt::AlignVCenter, timeText);
 
 
     if (showDate) {
-        QRect rect2(0, side / 2 + fm.height() / 2 - 2, side, side / 2);
+        QRect rect2(0, side / 2 + fm.height() / 2, side, side / 2);
         QFont font2(textFont, side/18);
         painter.setFont(font2);
         painter.setPen(QColor(dateColor));
         painter.drawText(rect2, Qt::AlignHCenter, QDate::currentDate().toString("d MMM yy"));
-        QRect rect3(0, 0, side, (side / 2) - (fm.height() / 2) + 2);
+        QRect rect3(0, 0, side, (side / 2) - (fm.height() / 2));
         painter.drawText(rect3, Qt::AlignHCenter | Qt::AlignBottom, QDate::currentDate().toString("dddd"));
     }
 
-    qint64 twelve = (time.hour() > 12) ? time.hour() - 12 : time.hour();
-    qint8 arcThickness = 6;
-    qint8 hourArcOffset = 20;
-    qint8 minuteArcOffset = 8;
+    int twelve = (time.hour() > 12) ? time.hour() - 12 : time.hour();
+    int arcThickness = side / 30;
+    int minuteArcOffset = 8;
+    int hourArcOffset = minuteArcOffset + arcThickness;
 
-    if (side > 380) {
-        arcThickness = 14;
-        hourArcOffset = 28;
-        minuteArcOffset = 14;
-    }
-    else if (side > 300) {
-        arcThickness = 12;
-        hourArcOffset = 32;
-        minuteArcOffset = 12;
-    }
-
-//    qDebug() << arcThickness;
     qreal hourPosition = -30.0 * twelve - time.minute() / 2;
     qreal minutePosition = -6.0 * time.minute();
     int h, s, l, a;
@@ -138,11 +125,11 @@ void ArcClock::paintEvent(QPaintEvent *)
         hourGroovePath.arcTo(hourRect, 90.0, 360.0 + hourPosition);
         hourGroove.setRenderHint(QPainter::Antialiasing);
         QPen hourGroovePen;
-        hourGroovePen.setWidth(2);
+        hourGroovePen.setWidth(arcThickness);
         hourGroovePen.setCapStyle(Qt::FlatCap);
         QColor hourGrooveColor(hourColor);
         hourGrooveColor.getHsl(&h, &s, &l, &a);
-        hourGrooveColor.setHsl(h, s, l/2, a);
+        hourGrooveColor.setHsl(h, s/2, l, a/2);
         hourGroovePen.setColor(hourGrooveColor);
         hourGroove.setPen(hourGroovePen);
         hourGroove.drawPath(hourGroovePath);
@@ -171,11 +158,11 @@ void ArcClock::paintEvent(QPaintEvent *)
         minuteGroovePath.arcTo(minuteRect, 90.0, 360 + minutePosition);
         minuteGroove.setRenderHint(QPainter::Antialiasing);
         QPen minuteGroovePen;
-        minuteGroovePen.setWidth(2);
+        minuteGroovePen.setWidth(arcThickness);
         minuteGroovePen.setCapStyle(Qt::FlatCap);
         QColor minuteGrooveColor(minuteColor);
         minuteGrooveColor.getHsl(&h, &s, &l, &a);
-        minuteGrooveColor.setHsl(h, s, l/2, a);
+        minuteGrooveColor.setHsl(h, s/2, l, a/2);
         minuteGroovePen.setColor(minuteGrooveColor);
         minuteGroove.setPen(minuteGroovePen);
         minuteGroove.drawPath(minuteGroovePath);
