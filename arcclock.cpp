@@ -51,8 +51,10 @@ void ArcClock::closeEvent(QCloseEvent* event)
 void ArcClock::writePosition()
 {
     QSettings settings("Phobian", "Simple Arc Clock");
-    settings.setValue("posX", (this->frameGeometry().x() < 0) ? 1 : this->frameGeometry().x());
-    settings.setValue("posY", (this->frameGeometry().y() < 0) ? 1 : this->frameGeometry().y());
+    settings.setValue("posX",
+                      (this->frameGeometry().x() < 0) ? 1 : this->frameGeometry().x());
+    settings.setValue("posY",
+                      (this->frameGeometry().y() < 0) ? 1 : this->frameGeometry().y());
     qApp->exit();
 }
 
@@ -102,7 +104,8 @@ void ArcClock::paintEvent(QPaintEvent *)
     QFont font(textFont);
     font.setPointSizeF((side/5.0) - fontAmPmAdjust);
 
-    /* If time width is greater than inside diameter of hour ring, reduce font size */
+    /* If time width is greater than inside diameter of hour ring,
+     * reduce font size */
     QFontMetrics fm(font);
     int timewidth = fm.width(timeText);
     int diameter = side - (hourArcOffset * 2 + arcThickness * 2);
@@ -121,13 +124,16 @@ void ArcClock::paintEvent(QPaintEvent *)
 
 
     if (showDate) {
-        QRect rect2(0, side / 2 + fm.height() / 2, side, side / 2);
+        QRect rect2(0, side / 2, side, side / 2);
+//        timePainter.drawRect(rect2);
         QFont font2(textFont, side/18);
         timePainter.setFont(font2);
         timePainter.setPen(QColor(dateColor));
-        timePainter.drawText(rect2, Qt::AlignHCenter, QDate::currentDate().toString("d MMM yy"));
-        QRect rect3(0, 0, side, (side / 2) - (fm.height() / 2));
-        timePainter.drawText(rect3, Qt::AlignHCenter | Qt::AlignBottom, QDate::currentDate().toString("dddd"));
+        timePainter.drawText(rect2, Qt::AlignHCenter | Qt::AlignVCenter,
+                             QDate::currentDate().toString("d MMM yy"));
+        QRect rect3(0, 0, side, (side / 2));
+        timePainter.drawText(rect3, Qt::AlignHCenter | Qt::AlignVCenter,
+                             QDate::currentDate().toString("dddd"));
     }
 
     /* Calculate arc angles from the current time */
@@ -137,8 +143,10 @@ void ArcClock::paintEvent(QPaintEvent *)
     /* Hue, saturation, luminance and alpha to calculate ring groove colours */
     int h, s, l, a;
     /* Create the rectangles that hold our arcs */
-    QRect hourRect(hourArcOffset, hourArcOffset, side - 2 * hourArcOffset, side - 2 * hourArcOffset);
-    QRect minuteRect(minuteArcOffset, minuteArcOffset, side - 2 * minuteArcOffset, side - 2 * minuteArcOffset);
+    QRect hourRect(hourArcOffset, hourArcOffset, side - 2 * hourArcOffset,
+                   side - 2 * hourArcOffset);
+    QRect minuteRect(minuteArcOffset, minuteArcOffset,
+                     side - 2 * minuteArcOffset, side - 2 * minuteArcOffset);
 
     /* If wanted, paint the hour groove */
     if (showRings) {
