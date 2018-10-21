@@ -127,7 +127,7 @@ void ArcClock::paintEvent(QPaintEvent *)
 //    qDebug() << arcThickness;
     qreal hourPosition = -30.0 * twelve - time.minute() / 2;
     qreal minutePosition = -6.0 * time.minute();
-
+    int h, s, l, a;
     QRect hourRect(hourArcOffset, hourArcOffset, side - 2 * hourArcOffset, side - 2 * hourArcOffset);
     QRect minuteRect(minuteArcOffset, minuteArcOffset, side - 2 * minuteArcOffset, side - 2 * minuteArcOffset);
 
@@ -140,7 +140,10 @@ void ArcClock::paintEvent(QPaintEvent *)
         QPen hourGroovePen;
         hourGroovePen.setWidth(2);
         hourGroovePen.setCapStyle(Qt::FlatCap);
-        hourGroovePen.setColor(QColor(hourColor));
+        QColor hourGrooveColor(hourColor);
+        hourGrooveColor.getHsl(&h, &s, &l, &a);
+        hourGrooveColor.setHsl(h, s, l/2, a);
+        hourGroovePen.setColor(hourGrooveColor);
         hourGroove.setPen(hourGroovePen);
         hourGroove.drawPath(hourGroovePath);
     }
@@ -170,7 +173,10 @@ void ArcClock::paintEvent(QPaintEvent *)
         QPen minuteGroovePen;
         minuteGroovePen.setWidth(2);
         minuteGroovePen.setCapStyle(Qt::FlatCap);
-        minuteGroovePen.setColor(QColor(minuteColor));
+        QColor minuteGrooveColor(minuteColor);
+        minuteGrooveColor.getHsl(&h, &s, &l, &a);
+        minuteGrooveColor.setHsl(h, s, l/2, a);
+        minuteGroovePen.setColor(minuteGrooveColor);
         minuteGroove.setPen(minuteGroovePen);
         minuteGroove.drawPath(minuteGroovePath);
     }

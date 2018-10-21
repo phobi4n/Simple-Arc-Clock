@@ -24,16 +24,16 @@ Prefs::Prefs(QWidget *parent) :
     m_textfont = settings.value("textFont").toString();
     ui->fcb_time->setCurrentFont(QFont(m_textfont));
 
-    QString dateColorStyle = QString("border: 1px solid black;background-color: %1;")
+    QString dateColorStyle = QString("border: 1px solid #ababab;background-color: %1;")
             .arg(m_datecolor);
     ui->lbl_dateColor->setStyleSheet(dateColorStyle);
-    QString timeColorStyle = QString("border: 1px solid black;background-color: %1;")
+    QString timeColorStyle = QString("border: 1px solid #ababab;background-color: %1;")
             .arg(m_timecolor);
     ui->lbl_timeColor->setStyleSheet(timeColorStyle);
-    QString hourColorStyle = QString("border: 1px solid black;background-color: %1;")
+    QString hourColorStyle = QString("border: 1px solid #ababab;background-color: %1;")
             .arg(m_hourcolor);
     ui->lbl_hourColor->setStyleSheet(hourColorStyle);
-    QString minuteColorStyle = QString("border: 1px solid black;background-color: %1;")
+    QString minuteColorStyle = QString("border: 1px solid #ababab;background-color: %1;")
             .arg(m_minutecolor);
     ui->lbl_minuteColor->setStyleSheet(minuteColorStyle);
     ui->cb_showDate->setChecked(settings.value("showDate").toBool());

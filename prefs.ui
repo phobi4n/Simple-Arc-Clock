@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>494</width>
-    <height>293</height>
+    <width>524</width>
+    <height>331</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,8 +16,8 @@
   <widget class="QPushButton" name="pb_close">
    <property name="geometry">
     <rect>
-     <x>380</x>
-     <y>250</y>
+     <x>400</x>
+     <y>280</y>
      <width>96</width>
      <height>33</height>
     </rect>
@@ -29,8 +29,8 @@
   <widget class="QPushButton" name="pb_apply">
    <property name="geometry">
     <rect>
-     <x>270</x>
-     <y>250</y>
+     <x>290</x>
+     <y>280</y>
      <width>96</width>
      <height>33</height>
     </rect>
@@ -39,97 +39,13 @@
     <string>Apply</string>
    </property>
   </widget>
-  <widget class="QWidget" name="layoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>274</x>
-     <y>170</y>
-     <width>207</width>
-     <height>61</height>
-    </rect>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout_2">
-    <item>
-     <widget class="QLabel" name="label_font">
-      <property name="text">
-       <string>Text Font</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QFontComboBox" name="fcb_time"/>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QWidget" name="lWidget">
-   <property name="geometry">
-    <rect>
-     <x>270</x>
-     <y>33</y>
-     <width>204</width>
-     <height>131</height>
-    </rect>
-   </property>
-   <layout class="QFormLayout" name="formLayout">
-    <item row="2" column="0" colspan="2">
-     <widget class="QCheckBox" name="cb_showDate">
-      <property name="minimumSize">
-       <size>
-        <width>172</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>Show Date</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="0" colspan="2">
-     <widget class="QCheckBox" name="cb_timeFormat">
-      <property name="text">
-       <string>12 hr Format</string>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="0">
-     <widget class="QCheckBox" name="cb_rings">
-      <property name="text">
-       <string>Show Rings</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QSpinBox" name="sb_startSize">
-      <property name="minimum">
-       <number>140</number>
-      </property>
-      <property name="maximum">
-       <number>640</number>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QLabel" name="label_5">
-      <property name="minimumSize">
-       <size>
-        <width>72</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>Startup Size</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
      <x>20</x>
      <y>20</y>
-     <width>231</width>
-     <height>211</height>
+     <width>241</width>
+     <height>221</height>
     </rect>
    </property>
    <property name="font">
@@ -145,9 +61,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>40</y>
-      <width>211</width>
-      <height>156</height>
+      <y>30</y>
+      <width>221</width>
+      <height>181</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
@@ -220,6 +136,15 @@
      </item>
      <item row="2" column="1">
       <widget class="QLabel" name="lbl_hourColor">
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Plain</enum>
+       </property>
+       <property name="lineWidth">
+        <number>0</number>
+       </property>
        <property name="text">
         <string/>
        </property>
@@ -262,11 +187,153 @@
     </layout>
    </widget>
   </widget>
+  <widget class="QGroupBox" name="groupBox_2">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>249</y>
+     <width>241</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Font</string>
+   </property>
+   <widget class="QFontComboBox" name="fcb_time">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>30</y>
+      <width>221</width>
+      <height>32</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_3">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>20</y>
+     <width>221</width>
+     <height>221</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="title">
+    <string>Options</string>
+   </property>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>30</y>
+      <width>201</width>
+      <height>131</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QSpinBox" name="sb_startSize">
+         <property name="font">
+          <font>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="minimum">
+          <number>140</number>
+         </property>
+         <property name="maximum">
+          <number>640</number>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_5">
+         <property name="minimumSize">
+          <size>
+           <width>89</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Startup Size</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="cb_showDate">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Show Date</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="cb_rings">
+       <property name="font">
+        <font>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Show Full Rings</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="cb_timeFormat">
+       <property name="font">
+        <font>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>12 hr Format</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
   <zorder>groupBox</zorder>
   <zorder>pb_close</zorder>
   <zorder>pb_apply</zorder>
-  <zorder>layoutWidget</zorder>
-  <zorder>layoutWidget</zorder>
+  <zorder>cb_timeFormat</zorder>
+  <zorder>cb_showDate</zorder>
+  <zorder>sb_startSize</zorder>
+  <zorder>label_5</zorder>
+  <zorder>groupBox_2</zorder>
+  <zorder>groupBox_3</zorder>
  </widget>
  <resources/>
  <connections>
