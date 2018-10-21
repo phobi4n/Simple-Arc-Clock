@@ -78,46 +78,69 @@ void ArcClock::mouseMoveEvent(QMouseEvent *event)
 
 void ArcClock::paintEvent(QPaintEvent *)
 {
+    /* Get various geometries to calculate ring and text sizes */
     int side = qMin(width(), height());
 //    QTime time = QTime( 10, 52, 10);
     QTime time = QTime::currentTime();
+    int arcThickness = side / 30;
+    int minuteArcOffset = 8;
+    int hourArcOffset = minuteArcOffset + arcThickness;
 
-    QPainter painter(this);
-    painter.setRenderHint(QPainter::Antialiasing);
-    painter.setPen(Qt::NoPen);
-    painter.setBrush(QColor(dialColor));
-
-    QFont font(textFont, side/7);
-    QFontMetrics fm(font);
-    font.setBold(true);
-    painter.setFont(font);
+    /* Setup to draw time */
+    QPainter timePainter(this);
+    timePainter.setRenderHint(QPainter::Antialiasing);
+    timePainter.setPen(Qt::NoPen);
+    timePainter.setBrush(QColor(dialColor));
     QString timeText = time.toString(timeFormat);
+
+    /* If drawing AM/PM, reduce font size to fit */
+    qreal fontAmPmAdjust = 0.0;
+
+    if (timeFormat.endsWith("p"))
+        fontAmPmAdjust = 10.0;
+
+    QFont font(textFont);
+    font.setPointSizeF((side/5.0) - fontAmPmAdjust);
+
+    /* If time width is greater than inside diameter of hour ring, reduce font size */
+    QFontMetrics fm(font);
+    int timewidth = fm.width(timeText);
+    int diameter = side - (hourArcOffset * 2 + arcThickness * 2);
+
+    if (timewidth > diameter - 4)
+        font.setPointSizeF((side/5.0) - fontAmPmAdjust - 4.0);
+
+//    font.setBold(true);
+    timePainter.setFont(font);
+
+    /* Create a rectangle the size of our widget and draw the time text
+     * in the centre of  it */
     QRect rect(0, 0, side, side);
-    painter.setPen(QColor(timeColor));
-    painter.drawText(rect, Qt::AlignHCenter | Qt::AlignVCenter, timeText);
+    timePainter.setPen(QColor(timeColor));
+    timePainter.drawText(rect, Qt::AlignHCenter | Qt::AlignVCenter, timeText);
 
 
     if (showDate) {
         QRect rect2(0, side / 2 + fm.height() / 2, side, side / 2);
         QFont font2(textFont, side/18);
-        painter.setFont(font2);
-        painter.setPen(QColor(dateColor));
-        painter.drawText(rect2, Qt::AlignHCenter, QDate::currentDate().toString("d MMM yy"));
+        timePainter.setFont(font2);
+        timePainter.setPen(QColor(dateColor));
+        timePainter.drawText(rect2, Qt::AlignHCenter, QDate::currentDate().toString("d MMM yy"));
         QRect rect3(0, 0, side, (side / 2) - (fm.height() / 2));
-        painter.drawText(rect3, Qt::AlignHCenter | Qt::AlignBottom, QDate::currentDate().toString("dddd"));
+        timePainter.drawText(rect3, Qt::AlignHCenter | Qt::AlignBottom, QDate::currentDate().toString("dddd"));
     }
 
+    /* Calculate arc angles from the current time */
     int twelve = (time.hour() > 12) ? time.hour() - 12 : time.hour();
-    int arcThickness = side / 30;
-    int minuteArcOffset = 8;
-    int hourArcOffset = minuteArcOffset + arcThickness;
-
     qreal hourPosition = -30.0 * twelve - time.minute() / 2;
     qreal minutePosition = -6.0 * time.minute();
+    /* Hue, saturation, luminance and alpha to calculate ring groove colours */
     int h, s, l, a;
+    /* Create the rectangles that hold our arcs */
     QRect hourRect(hourArcOffset, hourArcOffset, side - 2 * hourArcOffset, side - 2 * hourArcOffset);
     QRect minuteRect(minuteArcOffset, minuteArcOffset, side - 2 * minuteArcOffset, side - 2 * minuteArcOffset);
 
+    /* If wanted, paint the hour groove */
     if (showRings) {
         QPainter hourGroove(this);
         QPainterPath hourGroovePath;
@@ -135,6 +158,7 @@ void ArcClock::paintEvent(QPaintEvent *)
         hourGroove.drawPath(hourGroovePath);
     }
 
+    /* Paint the hour arc */
     QPainter hourArc(this);
     QPainterPath hourArcPath;
     hourArc.setRenderHint(QPainter::Antialiasing);
@@ -151,6 +175,7 @@ void ArcClock::paintEvent(QPaintEvent *)
     hourArc.setPen(hourPen);
     hourArc.drawPath(hourArcPath);
 
+    /* If wanted, paint the minute groove */
     if (showRings) {
         QPainter minuteGroove(this);
         QPainterPath minuteGroovePath;
@@ -168,6 +193,7 @@ void ArcClock::paintEvent(QPaintEvent *)
         minuteGroove.drawPath(minuteGroovePath);
     }
 
+    /* Paint the minute arc */
     QPainter minuteArc(this);
     QPainterPath minutePath;
     minuteArc.setRenderHint(QPainter::Antialiasing);
